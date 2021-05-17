@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <NavBar />
+        <NavBar user={user} />
         <Switch>
           <Route exact path="/rooms">
             {user && <ChatRoom user={user} />}

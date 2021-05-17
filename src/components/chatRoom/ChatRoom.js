@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import firebase, { firestore } from "firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import Message from "./Message";
+import "./ChatRoom.css";
 
 function ChatRoom({ user }) {
   const [text, setText] = useState("");

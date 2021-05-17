@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import firebase from "firebase";
-function NavBar(props) {
+import "./NavBar.css";
+function NavBar({ user }) {
   return (
     <nav id="navbar">
       <NavLink className="nav-item" to="/rooms">
@@ -10,14 +11,19 @@ function NavBar(props) {
       <NavLink className="nav-item" to="/">
         home page
       </NavLink>
-      <button
-        className="nav-item"
-        onClick={() => {
-          firebase.auth().signOut();
-        }}
-      >
-        sign out
-      </button>
+      {user && (
+        <NavLink
+          id="sign-out"
+          className="nav-item"
+          onClick={() => {
+            firebase.auth().signOut();
+            console.log(user);
+          }}
+          to="/"
+        >
+          sign out
+        </NavLink>
+      )}
     </nav>
   );
 }

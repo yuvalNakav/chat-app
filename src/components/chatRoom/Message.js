@@ -1,11 +1,14 @@
 import userEvent from "@testing-library/user-event";
 import React from "react";
+import "./ChatRoom.css";
 
-function Message({ message }) {
-  const messageClass = message.uid === userEvent.id ? "sent" : "received";
+function Message({ message, user }) {
+  const messageClass = message.uid === userEvent.id ? "received" : "sent";
   return (
-    <div>
-      <p className={`message ${messageClass}`}>{message.text}</p>
+    <div className={`message ${messageClass}`}>
+      <span className="name">{user.displayName}</span>
+      <img className="image" src={user.photoURL} alt="user" />
+      <span>{message.text}</span>
     </div>
   );
 }

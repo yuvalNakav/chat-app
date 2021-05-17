@@ -1,14 +1,66 @@
-.message {
+.image.sent {
+  left: 0;
 }
+.image .received {
+  right: 0;
+}
+.image {
+  display: inline-block;
+  height: 1.5rem;
+}
+
 .sent {
+  display: flex;
+  font-size: 1.5rem;
+  background-color: #bf7245;
+  align-self: left;
+  text-align: left;
+  margin: 10px;
+  flex-direction: row-reverse;
 }
 .received {
+  display: flex;
+  background-color: #4c6173;
+  right: 0;
+  align-self: right;
+  text-align: right;
+  margin: 10px;
+  font-size: 1.5rem;
+  align-self: flex-end;
 }
 .chat {
+  border: 1px solid black;
+  background-color: black;
+  display: inline-block;
+  min-height: 75vh;
+  min-width: 50vw;
+  border-radius: 0.5rem;
 }
 .message-form {
+  font-size: 2rem;
+  /* display: block; */
+  position: fixed;
+  bottom: 10vh;
+  left: 35vw;
+}
+.name {
+  color: white;
+  font-size: 0.5rem;
 }
 #send {
+  background-color: #f2e18d;
+  color: #bf7245;
+  font-size: 1.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 #type-line {
+  color: white;
+  background-color: #f2aa68;
+  font-size: 1.5rem;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+#type-line:focus-visible {
+  outline: none;
 }
