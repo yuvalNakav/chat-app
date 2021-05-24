@@ -1,0 +1,16 @@
+.chat-link {
+  color: black;
+  text-decoration: none;
+  margin: 5px;
+  color: #bf7245;
+  font-weight: 800;
+}
+.HomePage {
+  background-color: black;
+  border-radius: 0.5rem;
+  min-height: 95vh;
+}
+#header {
+  color: white;
+  font-size: 3rem;
+}

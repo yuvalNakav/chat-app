@@ -1,14 +1,12 @@
 #navBar {
-  background-color: none;
+  background-color: orange;
   position: fixed;
   top: 0;
 }
-#sign-out {
-  background-color: none;
-}
+
 .nav-item {
   text-decoration: none;
-  margin: 3px;
+  margin: 10px;
   color: #bf7245;
   text-shadow: 1px 1px 1px black;
 }

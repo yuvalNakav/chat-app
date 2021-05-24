@@ -1,53 +1,60 @@
-import React, { useState } from "react";
-import firebase, { firestore } from "firebase";
+import { useState, useRef } from "react";
+import firebase from "firebase";
+import "./ChatRoom.css";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import Message from "./Message";
-import "./ChatRoom.css";
 
-function ChatRoom({ user }) {
-  const [text, setText] = useState("");
+const ChatRoom = ({ currentRoom }) => {
+  const customRef = useRef();
+  const messagesRef = firebase.firestore().collection("messages");
 
-  const firestore = firebase.firestore();
-  const storage = firebase.storage();
+  const query = messagesRef
+    .where("room", "==", currentRoom)
+    .orderBy("createdAt")
+    .limit(20);
 
-  const messageRef = firestore.collection("messages");
+  const [messages] = useCollectionData(query, { idField: "id" });
+  const [message, setMessage] = useState("");
 
-  const query = messageRef.orderBy("createdAt").limit(25);
-  const [messages] = useCollectionData(query, { idFiled: "id" });
-
-  const sendMessage = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { uid, photoURL } = user;
-    await messageRef.add({
-      text: text,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    const { uid, photoURL, displayName } = firebase.auth().currentUser;
+    await messagesRef.add({
       uid,
       photoURL,
+      createdAt,
+      text: message,
+      room: currentRoom,
+      userName: displayName,
     });
-    setText("");
-    e.target.value = "";
+
+    setMessage("");
+    customRef.current.scrollIntoView({ behavior: "smooth" });
   };
+  console.log(messages);
+
   return (
     <div className="chat">
-      chatRoom
-      {messages?.map((message) => (
-        <Message message={message} user={user} key={message.id} />
-      ))}
-      <form className="message-form" onSubmit={sendMessage}>
+      <div className="messages">
+        {messages &&
+          messages.map((message, i) => <Message message={message} key={i} />)}
+        <span ref={customRef}></span>
+      </div>
+
+      <form onSubmit={handleSubmit} className="message-form">
         <input
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-          placeholder="Write a message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Enter message"
           id="type-line"
         />
-        <button type="submit" id="send">
-          send
+        <button type="submit" id="send" disabled={!message}>
+          Send
         </button>
       </form>
     </div>
   );
-}
+};
 
 export default ChatRoom;

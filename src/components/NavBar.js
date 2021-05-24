@@ -1,15 +1,21 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import firebase from "firebase";
 import "./NavBar.css";
-function NavBar({ user }) {
+
+function NavBar({ user, currentRoom, setShowListMenu }) {
   return (
-    <nav id="navbar">
+    <div id="navbar">
       <NavLink className="nav-item" to="/rooms">
-        chat rooms
+        {currentRoom} Chat Room
       </NavLink>
-      <NavLink className="nav-item" to="/">
-        home page
+      <NavLink
+        className="nav-item"
+        to="/"
+        onClick={() => {
+          setShowListMenu(true);
+        }}
+      >
+        home page-All Chats
       </NavLink>
       {user && (
         <NavLink
@@ -24,7 +30,7 @@ function NavBar({ user }) {
           sign out
         </NavLink>
       )}
-    </nav>
+    </div>
   );
 }
 

@@ -6,6 +6,7 @@ import HomePage from "./components/homePage/HomePage";
 import ChatRoom from "./components/chatRoom/ChatRoom";
 import Login from "./components/Login";
 import NavBar from "./components/NavBar";
+import { useState } from "react";
 firebase.initializeApp({
   apiKey: "AIzaSyDL2FL502xNXJPUa6yj3I9aY8QNuTsuG00",
   authDomain: "fir-demo-15723.firebaseapp.com",
@@ -19,17 +20,35 @@ firebase.initializeApp({
 const auth = firebase.auth();
 function App() {
   const [user] = useAuthState(auth);
-
+  const [currentRoom, setCurrentRoom] = useState("general");
+  const [showListMenu, setShowListMenu] = useState(true);
   return (
     <div className="App">
       <Router>
-        <NavBar user={user} />
+        <NavBar
+          user={user}
+          currentRoom={currentRoom}
+          setShowListMenu={setShowListMenu}
+        />
         <Switch>
           <Route exact path="/rooms">
-            {user && <ChatRoom user={user} />}
+            {user && currentRoom && (
+              <ChatRoom user={user} currentRoom={currentRoom} />
+            )}
           </Route>
           <Route exact path="/">
-            {user ? <HomePage user={user} /> : <Login />}
+            {user ? (
+              showListMenu && (
+                <HomePage
+                  user={user}
+                  currentRoom={currentRoom}
+                  setCurrentRoom={setCurrentRoom}
+                  setShowListMenu={setShowListMenu}
+                />
+              )
+            ) : (
+              <Login />
+            )}
           </Route>
         </Switch>
       </Router>
