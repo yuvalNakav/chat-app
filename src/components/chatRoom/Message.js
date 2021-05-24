@@ -32,7 +32,7 @@ const Message = ({ message }) => {
         <div className="contents" onClick={toggleCard}>
           <div className="user-name">
             <p>{userName}</p>
-            <p>{createdAt}</p>
+            <p>{createdAt.toDate().toLocaleTimeString("it-IT")}</p>
           </div>
           <div className="photo">
             <img src={photoURL} alt="avatar" />

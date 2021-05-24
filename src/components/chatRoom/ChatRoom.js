@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import firebase from "firebase";
 import "./ChatRoom.css";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -8,17 +8,25 @@ const ChatRoom = ({ currentRoom }) => {
   const customRef = useRef();
   const messagesRef = firebase.firestore().collection("messages");
 
-  const query = messagesRef
-    .where("room", "==", currentRoom)
-    .orderBy("createdAt")
-    .limit(20);
-
-  const [messages] = useCollectionData(query, { idField: "id" });
+  const [messages, loading] = useCollectionData(
+    messagesRef.limit(20).orderBy("createdAt")
+  );
   const [message, setMessage] = useState("");
+  const [relevantMessages, setRelevantMessages] = useState([]);
+
+  useEffect(
+    () =>
+      messages
+        ? setRelevantMessages(
+            messages.filter((message) => message.room === currentRoom)
+          )
+        : console.log("no messages!"),
+    [messages]
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    const createdAt = new Date();
     const { uid, photoURL, displayName } = firebase.auth().currentUser;
     await messagesRef.add({
       uid,
@@ -32,13 +40,14 @@ const ChatRoom = ({ currentRoom }) => {
     setMessage("");
     customRef.current.scrollIntoView({ behavior: "smooth" });
   };
-  console.log(messages);
 
   return (
     <div className="chat">
       <div className="messages">
-        {messages &&
-          messages.map((message, i) => <Message message={message} key={i} />)}
+        {relevantMessages &&
+          relevantMessages.map((message, i) => (
+            <Message message={message} key={i} />
+          ))}
         <span ref={customRef}></span>
       </div>
 
